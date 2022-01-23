@@ -1,0 +1,17 @@
+package com.springcloud.blog.admin.drools
+import com.gu.drools.Entity.*
+dialect  "java"
+
+rule "age>=18"
+    when
+        $p : People(age>=18,name!="")
+    then
+        $p.getResultVo().setValue($p.getName()+"成年了");
+end
+
+rule "age<18"
+    when
+        $p : People(age<18,name!="")
+    then
+        $p.getResultVo().setValue($p.getName()+"未成年");
+end
