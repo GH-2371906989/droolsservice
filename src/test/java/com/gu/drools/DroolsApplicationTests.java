@@ -1,8 +1,15 @@
 package com.gu.drools;
 
-import com.gu.drools.Entity.People;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.gu.drools.Vo.ResEntity;
+import com.gu.drools.fosunhealth.entity.Lccont;
+import com.gu.drools.fosunhealth.entity.Lcinsured;
+import com.gu.drools.fosunhealth.entity.Lcpol;
+import com.gu.drools.fosunhealth.entity.ResultDto;
 import com.gu.drools.mapper.EntityDateMapper;
 import org.junit.jupiter.api.Test;
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,23 +19,26 @@ class DroolsApplicationTests {
     @Autowired
     private EntityDateMapper entityDateMapper;
     @Autowired
-    private KieSession session;
+    private KieContainer kieContainer;
     @Test
     void contextLoads() {
-        EntityDateMapper byEntity = entityDateMapper.getByEntity(1);
-        System.out.println("byEntity = " + byEntity);
+
     }
 
 
 
     @Test
     public void peoplse() {
-        People people = new People();
-        people.setAge(1);
-        people.setName("张三");
-        session.insert(people);
+        KieSession session = kieContainer.newKieSession();
+        ResEntity resEntity = new ResEntity();
+        Lcpol lcpol = new Lcpol();
+        lcpol.setRiskCode("111");
+        resEntity.setLcpol(lcpol);
+        session.insert(resEntity.getLcpol());
+        ResultDto resultDto = new ResultDto();
+        session.insert(resultDto);
         int i = session.fireAllRules();
+        System.out.println("i = " + i);
         session.destroy();
-        System.out.println("people = " + people);
     }
 }
