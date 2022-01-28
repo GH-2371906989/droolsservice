@@ -102,11 +102,19 @@
     </dependencies>
 
     <build>
+        <testResources>
+            <testResource>
+                <directory>
+                    ${project.basedir}/src/main/resources
+                </directory>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <fork>true</fork>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

@@ -1,12 +1,13 @@
-package com.springcloud.blog.admin.drools
-import com.gu.drools.fosunhealth.entity.*
-dialect  "java"
+package rules
+import com.gu.drools.fosunhealth.entity.*;
+import java.util.*;
+import java.text.SimpleDateFormat;
+dialect  "mvel"
 
-rule "NPIAC010106-002"
+rule "NPIAP01020201-016"
     when
     $result:ResultDto()
-    险种 : Lcpol()
-    eval(险种.getRiskCode().equals("111"))
+    险种:Lcpol( )
     then
-    $result.addVerify("被保人国籍中国香港（HKG-中国香港）、中国澳门（MAC-澳门）、中国台湾（TWN-中国台湾），累计重疾险基本保额最高限制100万",drools.getRule().getName());
+    $result.addVerify(" 精选、臻选计划主被保险人首次投保年龄限18-60周岁",drools.getRule().getName());
 end

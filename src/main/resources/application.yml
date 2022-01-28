@@ -11,6 +11,3 @@ spring:
       max-active: 20
     username: root
 
-
-mybatis:
-  type-aliases-package: com.gu.drools.mapper

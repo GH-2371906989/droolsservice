@@ -18,7 +18,8 @@ public class DroolsServiceImpl implements  DroolsService{
     public String resuleEntity(ResEntity resEntity) {
         KieSession kieSession = kieContainer.newKieSession();
         kieSession.insert(resEntity.getLcpol());
-        System.out.println(resEntity.getLcpol());
+        kieSession.insert(resEntity.getLccont());
+        kieSession.insert(resEntity.getLcinsured());
         kieSession.insert(resEntity.getResultDto());
         int i = kieSession.fireAllRules();
         kieSession.destroy();
