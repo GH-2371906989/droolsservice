@@ -1,13 +1,22 @@
 package rules
 import com.gu.drools.fosunhealth.entity.*;
+import com.gu.drools.fosunhealth.util.PublicStaticFunctions;
 import java.util.*;
 import java.text.SimpleDateFormat;
 dialect  "mvel"
 
+import java.lang.Math
+import com.gu.drools.fosunhealth.entity.ResultDto;
+
+
+
 rule "NPIAP01020201-016"
     when
-    $result:ResultDto()
-    险种:Lcpol( )
+    $res:ResultDto()
+    险种:Lcpol(startDate>new Date())
     then
-    $result.addVerify(" 精选、臻选计划主被保险人首次投保年龄限18-60周岁",drools.getRule().getName());
+    $res.addVerify(" 精选、臻选计划主被保险人首次投保年龄限18-60周岁",drools.getRule().getName());
+    System.out.println("=====");
 end
+
+

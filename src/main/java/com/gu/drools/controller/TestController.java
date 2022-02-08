@@ -40,7 +40,6 @@ public class TestController {
     }
     @PostMapping("/execute")
     public String execute(@RequestBody ResEntity resEntity) throws Exception {
-        System.out.println("resEntity = " + resEntity);
         return droolsService.resuleEntity(resEntity);
     }
 
