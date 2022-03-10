@@ -2,9 +2,9 @@ package com.gu.drools.fosunhealth.entity;
 
 public class VerifyResult {
     /*
-     * 规则违反信息
-     * */
-    //违反规则名称
+    * 规则违反信息
+    * */
+   //违反规则名称
     private String ruleName="";
     //违反规则编码
     private String ruleCode="";

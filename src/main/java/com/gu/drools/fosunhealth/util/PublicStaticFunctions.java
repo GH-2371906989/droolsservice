@@ -8,6 +8,64 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PublicStaticFunctions {
+    //证件号码合法性校验
+    public static Boolean idNoValidity(String idType , String idNo){
+        //身份证校验
+        String IDCARD = "\\d{6}(19|20)*[0-99]{2}(0[1-9]{1}|10|11|12)(0[1-9]{1}"
+                + "|1[0-9]|2[0-9]|30|31)(\\w*)";
+        //护照校验
+        String PASSPORT1 = "/^[a-zA-Z]{5,17}$/";
+        String PASSPORT2 = "^[a-zA-Z0-9]{5,17}$";
+        /** 港澳通行证验证   */
+        String HKMAKAO = "/^[HMhm]{1}([0-9]{10}|[0-9]{8})$/";
+        /** 台湾通行证验证   */
+        String TAIWAN1 = " /^[0-9]{8}$/";
+        String TAIWAN2 = "/^[0-9]{10}$/";
+
+        Pattern pattern1 = Pattern.compile(IDCARD);
+        Matcher match1 = pattern1.matcher(idNo);
+        boolean isMatch1 = match1.matches();
+        if(idType=="0"&&isMatch1){
+            return true;
+        }
+
+        Pattern pattern2 = Pattern.compile(PASSPORT1);
+        Matcher match2 = pattern2.matcher(idNo);
+        boolean isMatch2 = match2.matches();
+        if(idType=="1"&&isMatch2){
+            return true;
+        }
+
+        Pattern pattern3 = Pattern.compile(PASSPORT2);
+        Matcher match3 = pattern3.matcher(idNo);
+        boolean isMatch3 = match3.matches();
+        System.out.println("PASSPORT2");
+
+        if(idType=="1"&&isMatch3){
+            return true;
+        }
+
+        Pattern pattern4 = Pattern.compile(HKMAKAO);
+        Matcher match4 = pattern4.matcher(idNo);
+        boolean isMatch4 = match4.matches();
+        if(idType=="7"&&isMatch4){
+            return true;
+        }
+
+        Pattern pattern5 = Pattern.compile(TAIWAN1);
+        Matcher match5 = pattern5.matcher(idNo);
+        boolean isMatch5 = match5.matches();
+        if(idType=="8"&&isMatch5){
+            return true;
+        }
+        Pattern pattern6 = Pattern.compile(TAIWAN2);
+        Matcher match6 = pattern6.matcher(idNo);
+        boolean isMatch6 = match6.matches();
+        if(idType=="8"&&isMatch6){
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 功能：判断字符串是否为整数

@@ -2,12 +2,47 @@ server:
   port: 9999
 spring:
   datasource:
-    url: jdbc:mysql:///drools?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    password: 123456
-    tomcat:
-      max-idle: 10
-      min-idle: 0
-      max-active: 20
+    url: jdbc:mysql://82.156.208.223:3306/srule?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&zeroDateTimeBehavior=CONVERT_TO_NULL
     username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: Sino_HikariCP
+      minimum-idle: 5   #最小空闲连接数量
+      idle-timeout: 60000  #空闲连接存活最大时间，默认600000（10分钟）
+      maximum-pool-size: 10 #连接池最大连接数，默认是10
+      max-lifetime: 60000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      connection-timeout: 60000  #数据库连接超时时间,默认30秒，即30000
+      connection-test-query: SELECT 1
+      validation-timeout: 3000
+      login-timeout: 5
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
 
+
+
+mybatis-plus:
+  # mapper.xml 位置
+  mapper-locations: classpath:mapper/*.xml
+  # 全局配置
+  global-config:
+    db-config:
+      #id自增
+      id-type: auto
+      # 为null，为空串的忽略，就是如果设置值为null，“”，不会插入数据库
+      field-strategy: NOT_EMPTY
+      #数据库类型
+      db-type: MYSQL
+  configuration:
+    # 驼峰命名规则开启
+    map-underscore-to-camel-case: true
+    #map为空也显示键值对
+    call-setters-on-nulls: true
+    # ?????????sql?????????????????
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #自动扫描到自定义POJO
+  type-aliases-package: com.gu.item.pojo

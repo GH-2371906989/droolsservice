@@ -6,17 +6,34 @@ import java.text.SimpleDateFormat;
 dialect  "mvel"
 
 import java.lang.Math
-import com.gu.drools.fosunhealth.entity.ResultDto;
-
-
-
-rule "NPIAP01020201-016"
+import com.gu.drools.fosunhealth.entity.*
+import org.springframework.jdbc.core.JdbcTemplate
+import com.alibaba.fastjson.JSONObject
+import org.drools.core.util.Drools;
+/*rule "NPGC0002"
     when
-    $res:ResultDto()
-    险种:Lcpol(startDate>new Date())
+    $个人保单:Lccont()
+    $被保人:Lcinsured(name.equals("张三")) from $个人保单.lcinsuredList
+    $被保人1:Lcinsured(name.equals("李四")) from $个人保单.lcinsuredList
+
     then
-    $res.addVerify(" 精选、臻选计划主被保险人首次投保年龄限18-60周岁",drools.getRule().getName());
-    System.out.println("=====");
-end
+    System.out.println(JSONObject.toJSONString($被保人));
+    System.out.println(JSONObject.toJSONString($被保人1));
+    System.out.println("成功");
+end*/
+
+
+/*rule "NPGC0002"
+    when
+    $uwDto:ResultDto()
+    $i:Insured()
+    eval( new Date() < new SimpleDateFormat("yyyy-MM-dd").parse("9999-01-01"))
+    then
+    System.out.println($i.riskAmntRelaList.size());
+
+    System.out.println(new Date());
+    System.out.println(new SimpleDateFormat("yyyy-MM-dd").parse("9999-01-01"));
+    $uwDto.addVerify("投保人证件有效止期小于当前系统日期",drools.getRule().getName());
+end*/
 
 

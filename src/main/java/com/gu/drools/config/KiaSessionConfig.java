@@ -1,6 +1,8 @@
 package com.gu.drools.config;
 
 
+import com.gu.drools.service.DroolsService;
+import com.gu.drools.service.DroolsServiceImpl;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.builder.*;

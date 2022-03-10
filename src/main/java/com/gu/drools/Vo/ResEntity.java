@@ -13,6 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 public class ResEntity implements Serializable {
+    private Insured insured;
+    private RiskAmntRela riskAmntRela;
     private Lcinsured lcinsured ; //被保人
     private Lcbnf lcbnf ; //受益人
     private Lcappnt lcappnt; //投保人
@@ -26,4 +28,5 @@ public class ResEntity implements Serializable {
     private Llclaimdetail llclaimdetail;//理赔明细
     private Laagent laagent;//代理人
     private ResultDto resultDto =new ResultDto();
+    private UWDto uwDto =new UWDto();
 }
