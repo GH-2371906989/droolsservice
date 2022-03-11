@@ -5,7 +5,7 @@ import java.util.*;
 import java.text.*;
 import java.lang.*;
 import com.alibaba.fastjson.*;
-dialect  "mvel"
+dialect  "java"
 
 /*rule "NPGC0020"
 when
@@ -21,12 +21,9 @@ rule "NPGC0020"
 when
     返回信息:UWDto()
     个人保单 : Lccont( )
-    直接被保人 : Lcinsured( ) from 个人保单.lcinsuredList
-    eval( 直接被保人.birthday== 个人保单.cvaliDate )
+    eval( PublicStaticFunctions.getname() != 个人保单.getContNo())
 then
-    ruleInfo(返回信息,drools.getRule().getName())
+    System.out.println("success");
 end
 
- function void ruleInfo(UWDto var0,String name){
-	var0.addVerify("年龄不正确",name);
-}
+

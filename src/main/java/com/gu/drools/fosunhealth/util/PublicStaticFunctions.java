@@ -9,6 +9,10 @@ import java.util.regex.Pattern;
 
 public class PublicStaticFunctions {
     //证件号码合法性校验
+    public static String getname(){
+        return "11";
+    }
+
     public static Boolean idNoValidity(String idType , String idNo){
         //身份证校验
         String IDCARD = "\\d{6}(19|20)*[0-99]{2}(0[1-9]{1}|10|11|12)(0[1-9]{1}"
