@@ -32,6 +32,7 @@ public class DroolsServiceImpl implements  DroolsService{
                     SerializerFeature.WriteNullBooleanAsFalse,
                     SerializerFeature.WriteNullNumberAsZero);
         }
+        System.out.println("======================");
         else return "{'error','错误lllll'}";
     }
 }
