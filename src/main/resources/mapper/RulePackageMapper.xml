@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gu.drools.mapper.RulePackageMapper">
+
+    <resultMap id="BaseResultMap" type="com.gu.drools.pojo.RulePackage">
+        <id column="id" property="id"/>
+        <result property="package_name" column="package_name"/>
+        <result property="leave" column="leave"/>
+        <result property="pid" column="pid"/>
+        <collection property="children" ofType="com.gu.drools.pojo.RulePackage"
+                    column="id" select="getFindAllByParentID"/>
+
+    </resultMap>
+
+
+    <select id="getFindAllByParentID" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        SELECT * FROM drools.rule_package WHERE pid = #{id}
+    </select>
+
+    <select id="getAllPackage" resultMap="BaseResultMap">
+        SELECT * FROM drools.rule_package WHERE pid = 0
+    </select>
+</mapper>

@@ -3,15 +3,14 @@ package com.gu.drools.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.gu.drools.File.FileUtil;
 import com.gu.drools.Vo.ResEntity;
-import com.gu.drools.entry.Bom;
-import com.gu.drools.entry.RuleDate;
 import com.gu.drools.fosunhealth.entity.*;
 import com.gu.drools.service.DroolsService;
-import com.gu.drools.service.RuleMakeService;
-import com.gu.drools.tools.rule.TrunMain;
-import org.drools.core.ClassObjectFilter;
-import org.kie.api.runtime.KieSession;
+import com.gu.drools.service.RuleService;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,23 +19,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @CrossOrigin
 @RequestMapping("drools")
+@Slf4j
 public class TestController {
     public static final String FUrl = "src/main/resources/";
     @Autowired
     private DroolsService droolsService;
     @Autowired
-    private RuleMakeService service;
+    private RuleService ruleService;
     @PostMapping("/upload")
     public String test(@RequestParam("file") MultipartFile file) throws IOException {
         if (!file.isEmpty()){
@@ -51,19 +47,8 @@ public class TestController {
 
         return file.toString();
     }
-    @GetMapping("/getDrl/{id}")
-    public Map getDrl(@PathVariable Integer id) throws IOException {
-        Map<String, String> drl = new HashMap<>();
-        RuleDate ruleDate = service.toRuleDate(id);
-        System.out.println("ruleDate = " + ruleDate);
-        if (ruleDate == null){
-            drl.put("drl","id不存在");
-            return drl;
-        }
-        System.out.println("ruleDate.getPredefinedList() = " + ruleDate.getPredefinedList());
-        drl = TrunMain.TrunDrl(ruleDate);
-        newFile(drl);
-        return drl;
+
+    public static void main(String[] args) {
     }
 
     private void newFile(Map<String, String> code) throws IOException {

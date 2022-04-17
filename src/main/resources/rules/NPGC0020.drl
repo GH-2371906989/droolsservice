@@ -21,9 +21,9 @@ rule "NPGC0020"
 when
     返回信息:UWDto()
     个人保单 : Lccont( )
-    eval( PublicStaticFunctions.getname() != 个人保单.getContNo())
+    eval( PublicStaticFunctions.getname().equals(个人保单.getContNo()))
 then
-    System.out.println("success");
+    返回信息.addVerify("保单号错误",drools.getRule().getName());
 end
 
 
