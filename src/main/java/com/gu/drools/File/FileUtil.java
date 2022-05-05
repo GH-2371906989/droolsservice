@@ -1,30 +1,38 @@
 package com.gu.drools.File;
 
+import com.gu.drools.config.exception.BusinessException;
 import com.jcraft.jsch.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.poi.util.IOUtils;
 import org.drools.core.util.IoUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
 import java.util.Vector;
 
 @Slf4j
+@Component
 public class FileUtil {
     //ftp对象
     private static FTPClient ftp;
     //会话
     private static Session session;
     //需要连接到的ftp端的ip
+    @Value("${sftp.ip}")
     private String ip;
     //连接端口，默认21
+    @Value("${sftp.port}")
     private int port;
     //要连接到的ftp端的名字
+    @Value("${sftp.username}")
     private String name;
     //要连接到的ftp端的对应得密码
     private String password;
     //私钥
+    @Value("${sftp.privateKey}")
     private String privateKey;
     //文件流
     InputStream inputStream = null;
@@ -44,6 +52,9 @@ public class FileUtil {
         this.port = port;
         this.name = name;
         this.privateKey = privateKey;
+    }
+    public FileUtil(){
+
     }
 
     //登录，检查链接情况
@@ -72,7 +83,7 @@ public class FileUtil {
             sftp = (ChannelSftp) channel;
             System.out.println("登录成功");
         } catch (JSchException e) {
-            e.printStackTrace();
+            throw new BusinessException("登录失败，错误：{}"+e.getMessage());
         }
 
     }
@@ -103,6 +114,25 @@ public class FileUtil {
         }
 
     }
+    public void delectURL(String delectURL) throws SftpException {
+        if(isDir(delectURL)){
+            sftp.cd(delectURL);
+            Vector<ChannelSftp.LsEntry> entries = sftp.ls(".");
+            for (ChannelSftp.LsEntry l:entries) {
+                // sftp的ls命令会包含父文件夹和当前文件夹，递归时排除以免死循环
+                if (!".".equals(l.getFilename()) && !"..".equals(l.getFilename())) {
+                    delectURL(l.getFilename());
+                }
+            }
+            sftp.cd("..");
+            sftp.rmdir(delectURL);
+        }else {
+            sftp.rm(delectURL);
+        }
+    }
+    public synchronized boolean isDir(String entry) throws SftpException {
+        return sftp.stat(entry).isDir();
+    }
     public void delect(String delectPath,String name) {
         if(delectPath != null && !"".equals(delectPath)){
             try {
@@ -120,7 +150,44 @@ public class FileUtil {
         }
 
     }
-
+    /*
+     * basePath 上传目录
+     * direcotry 子目录
+     * sftpFileName 上传的文件名
+     * */
+    public void  uploadSFTP(String uploadPath, String direcotry,String sftpFileName,byte[] bytes) throws SftpException {
+            try {
+                sftp.cd(uploadPath);
+                log.info("切换到{}目录下",uploadPath);
+                if (!direcotry.trim().equals("")){
+                    sftp.cd(direcotry);
+                    log.info("切换到{}目录下",direcotry);
+                }
+            } catch (SftpException e) {
+                String[] dirs = direcotry.split("/");
+                String temPath = uploadPath;
+                for (String dir: dirs
+                ) {
+                    if( null == dir || "".equals(dir)) continue;
+                    temPath +="/" + dir;
+                    try {
+                        sftp.cd(temPath);
+                    } catch (SftpException ex) {
+                        sftp.mkdir(temPath);
+                        log.info("创建文件夹：{}",dir);
+                        sftp.cd(temPath);
+                        log.info("进入到{}文件夹",dir);
+                    }
+                }
+            }
+            try {
+                sftp.put(new ByteArrayInputStream(bytes),sftpFileName);
+                log.info("上传{}成功",sftpFileName);
+            } catch (SftpException e) {
+                log.info("上传文件错误");
+                throw new BusinessException("上传文件错误");
+            }
+    }
     /*
     * basePath 上传目录
     * direcotry 子目录

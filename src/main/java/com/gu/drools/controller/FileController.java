@@ -4,6 +4,7 @@ import com.gu.drools.File.FileUtil;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
@@ -24,12 +25,12 @@ import java.util.Vector;
 public class FileController {
 
 
+    @ApiOperation("远程下载文件")
     @GetMapping("/saveFile")
     public String saveFile() throws IOException, JSchException, SftpException {
         log.info("saveFile");
         String ip="152.136.163.72";//临时域名
         String username="root";//用户名
-
         String privateKey= "PDF/SSH";
         FileUtil file = new FileUtil(username,ip,22,privateKey );
         log.info("开始登录");
@@ -39,6 +40,7 @@ public class FileController {
         file.closeFtp();
         return "saveFile";
     }
+    @ApiOperation("删除本地文件")
     @PostMapping("/delectFile")
     public String delectFile(String name) throws IOException, JSchException {
 
@@ -49,7 +51,7 @@ public class FileController {
         return "删除成功";
     }
 
-    @GetMapping("/updateFile")
+/*    @GetMapping("/updateFile")
     public String updateFile() throws IOException, JSchException, SftpException {
         String ip="152.136.163.72";//临时域名
         String username="root";//用户名
@@ -86,5 +88,5 @@ public class FileController {
             map.put("error","路径错误");
         }
         return map;
-    }
+    }*/
 }

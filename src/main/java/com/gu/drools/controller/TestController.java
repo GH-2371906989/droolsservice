@@ -10,6 +10,7 @@ import com.gu.drools.service.DroolsService;
 import com.gu.drools.service.RuleService;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class TestController {
     private DroolsService droolsService;
     @Autowired
     private RuleService ruleService;
-    @PostMapping("/upload")
+/*    @PostMapping("/upload")
     public String test(@RequestParam("file") MultipartFile file) throws IOException {
         if (!file.isEmpty()){
             File fileUrl = new File(FUrl + "upload/"+file.getOriginalFilename());
@@ -46,7 +47,7 @@ public class TestController {
 
 
         return file.toString();
-    }
+    }*/
 
     public static void main(String[] args) {
     }
@@ -70,7 +71,7 @@ public class TestController {
         writer.append(code.get("drl"));
         writer.close();
     }
-
+    @ApiOperation("获取实体")
     @GetMapping("/getEntity")
     public String getEntity() throws Exception {
         ResEntity resEntity = new ResEntity();
@@ -83,6 +84,7 @@ public class TestController {
         JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
         return toJSONString(resEntity);
     }
+    @ApiOperation("执行")
     @PostMapping("/execute")
     public String execute(@RequestBody ResEntity resEntity) throws Exception {
         return droolsService.resuleEntity(resEntity);

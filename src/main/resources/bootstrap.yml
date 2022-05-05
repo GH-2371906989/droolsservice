@@ -6,11 +6,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 152.136.163.72:8849
+        server-addr: 152.136.163.72:8848
         namespace: 3785104b-ccad-4b08-91a9-e3f9e669b86b
         group: droolsservice
       config:
-        server-addr: 152.136.163.72:8849
+        server-addr: 152.136.163.72:8848
         namespace: 3785104b-ccad-4b08-91a9-e3f9e669b86b
         file-extension: yaml
         group: droolsservice
